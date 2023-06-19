@@ -16,6 +16,7 @@ const BabyNames = () => {
     
     return (
       <div className="container">
+        
         <input
           className="search-bar"
           type="text"
@@ -23,18 +24,21 @@ const BabyNames = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         ></input>
-
+        <div>
+          <Favorites favorites = {favorites}/>
+        </div>
         <div className="names">
           {filteredItems.map(item => (
             <div
               className={item.sex === "m" ? "male-names" : "female-names"}
               key={item.id}
+              onClick={() => addToFavorites(item.name)}
             >
               <p>{item.name}</p>
             </div>
           ))}
         </div>
-        <Favorites favorites = {favorites}/>
+      
       </div>
     );
   };

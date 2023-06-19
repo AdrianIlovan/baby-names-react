@@ -6,7 +6,7 @@ const Favorites = ({favorites}) => {
             <h1>Favorites: </h1>
             <ul>
                 {favorites.map((name, index) => (
-                    <li key={index}>{name}</li>
+                <div key={index}>{name}</div>
                 ))}
             </ul>
         </div>
