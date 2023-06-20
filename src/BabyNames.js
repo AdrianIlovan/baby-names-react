@@ -1,34 +1,78 @@
 import React, { useState } from "react";
 import babyNamesData from './babyNamesData.json';
 import Favorites from "./Favorites";
+import GenderButtons from "./GenderButtons";
 
 const BabyNames = () => {
+  // Gender BTN
+  const [femaleGender, setFemaleGender] = useState(false); // Track female gender button state
+  const [maleGender, setMaleGender] = useState(false);
+
+  // Search Input
   const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState([]);
+
+  // Filter Names
   const [filteredItems, setFilteredItems] = useState(babyNamesData);
 
   const handleSearchChange = (e) => {
     const searchValue = e.target.value;
     setSearch(searchValue);
 
-    const filteredItems = babyNamesData.filter(item =>
+    let filteredItems = babyNamesData.filter((item) =>
       item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
+
+    if (femaleGender) {
+      filteredItems = filteredItems.filter((item) => item.sex === "f");
+    } else if (maleGender) {
+      filteredItems = filteredItems.filter((item) => item.sex === "m");
+    }
+
     setFilteredItems(filteredItems);
   };
 
+  // Add/Remove Favorites
+  const [favorites, setFavorites] = useState([]);
+
   const addToFavorites = (name) => {
-    setFavorites(prevFavorites => [...prevFavorites, name]);
-    setFilteredItems(prevFilteredItems =>
-      prevFilteredItems.filter(item => item.name !== name)
+    setFavorites((prevFavorites) => [...prevFavorites, name]);
+    setFilteredItems((prevFilteredItems) =>
+      prevFilteredItems.filter((item) => item.name !== name)
     );
   };
 
   const removeFromFavorites = (name) => {
-    setFilteredItems(prevFilteredItems => [...prevFilteredItems, { name }]);
-    setFavorites(prevFavorites =>
-      prevFavorites.filter(favorite => favorite !== name)
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((favorite) => favorite !== name)
     );
+  };
+
+  const handleFemaleButtonClick = () => {
+    setFemaleGender(!femaleGender); // Toggle the female gender button state
+
+    let filteredItems = babyNamesData.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (!femaleGender) {
+      filteredItems = filteredItems.filter((item) => item.sex === "f");
+    }
+
+    setFilteredItems(filteredItems);
+  };
+
+  const handleMaleButtonClick = () => {
+    setMaleGender(!maleGender); // Toggle the male gender button state
+
+    let filteredItems = babyNamesData.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (!maleGender) {
+      filteredItems = filteredItems.filter((item) => item.sex === "m");
+    }
+
+    setFilteredItems(filteredItems);
   };
 
   return (
@@ -40,11 +84,23 @@ const BabyNames = () => {
         value={search}
         onChange={handleSearchChange}
       />
+      <div className="gender-btn">
+        <GenderButtons
+          femaleGender={femaleGender}
+          onFemaleClick={handleFemaleButtonClick}
+          maleGender={maleGender}
+          onMaleClick={handleMaleButtonClick}
+        />
+      </div>
       <div className="favorites">
-        <Favorites favorites={favorites} removeFromFavorites={removeFromFavorites} addToFavorites={addToFavorites} />
+        <Favorites
+          favorites={favorites}
+          removeFromFavorites={removeFromFavorites}
+          addToFavorites={addToFavorites}
+        />
       </div>
       <div className="names">
-        {filteredItems.map(item => (
+        {filteredItems.map((item) => (
           <div
             className={item.sex === "m" ? "male-names" : "female-names"}
             key={item.id}

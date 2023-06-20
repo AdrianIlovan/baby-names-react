@@ -1,6 +1,6 @@
 import React from "react";
 
-const Favorites = ({ favorites, removeFromFavorites, addToFavorites }) => {
+const Favorites = ({ favorites, removeFromFavorites }) => {
   return (
     <div className="favorites">
       <h1>Favorites:</h1>
@@ -17,7 +17,7 @@ const Favorites = ({ favorites, removeFromFavorites, addToFavorites }) => {
           ))}
         </div>
       ) : (
-        <p>No favorites selected yet.</p>
+        <p>Click on some names below to add to your favorites.</p>
       )}
     </div>
   );
