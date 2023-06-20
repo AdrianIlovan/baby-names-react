@@ -67,3 +67,12 @@
 .favorite-names .female-names p {
   background-color: pink;
 }
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.female-button {
+  
+}
